@@ -1,19 +1,22 @@
-import java.awt.SplashScreen;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class first {
 	public static void main(String args[]) {
 		final String FILE_NAME = "recipe-data.txt";
 		String[] recipeList = null;
+		final String[] USER_LIST = {"kou"};
 		int inputId = -1;
+		Map<String,String> recipeListOfUser = new HashMap<String,String>();
 
 		System.out.println("レシピのIDを入力してください: ");
 		BufferedReader input = new BufferedReader(new InputStreamReader(
 				System.in));
 		try {
-			inputId = Integer.parseInt(input.readLine());
+			inputId = Integer.parseInt(input.readLine()); //FIXME 数字以外を入力すると例外が起きる
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			inputId = -1;
 		}
 
 		// ファイルを読んでレシピリストを作成
@@ -27,6 +30,10 @@ public class first {
 				recipeString += (char) ch;
 			}
 			recipeList = recipeString.split("\n");
+			for(String putString : recipeList)
+			{
+				recipeListOfUser.put(USER_LIST[0], putString);
+			}
 
 			filereader.close();
 		} catch (FileNotFoundException e) {
@@ -35,7 +42,7 @@ public class first {
 			System.out.println(e);
 		}
 
-		/*入力データがリストに存在するIDの場合はIDに対応するレシピを返す
+		/*入力データがリストに存在するIDの場合はIDに対応するレシピと、対応するURLを返す
 		 * それ以外の場合はすべてのレシピリストを返す
 		 */
 		if (inputId > 0 && inputId <= recipeList.length) {
@@ -45,6 +52,7 @@ public class first {
 				System.out.println(i + 1 + ": " + recipeList[i]);
 			}
 		}
+
 		
 		
 	}
